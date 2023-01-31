@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventario.Inventario.model.Object;
-import com.inventario.Inventario.repositories.ObjectRepository;
+import com.inventario.Inventario.service.ObjectService;
 
 
 @RestController
@@ -22,46 +22,33 @@ import com.inventario.Inventario.repositories.ObjectRepository;
 public class ObjectController {
 	
 	@Autowired
-	private ObjectRepository repository;
+	private ObjectService objService;
 	
 	@GetMapping
 	public List<Object> findAll(){
-		List<Object> result = repository.findAll();
-		return result;
+		 return objService.findAll();
+		 
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> buscar(@PathVariable Long id) {
-		return repository.findById(id)
-				.map(object -> ResponseEntity.ok(object))
-				.orElse(ResponseEntity.notFound().build());
+		return objService.buscar(id);
 	}
 	
 	@PostMapping
 	public Object insert(@RequestBody Object object){
-		Object result = repository.save(object);
-		return result;
+		return objService.insert(object);
+
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizar(@PathVariable Long id,
-			@RequestBody Object object) {
-		if(!repository.existsById(id)) {
-					return ResponseEntity.notFound().build();
-				}
-		object = repository.save(object);
-		
-		return ResponseEntity.ok(object);
+	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody Object object) {
+		return objService.update(id, object);
 	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		if(!repository.existsById(id)) {
-					return ResponseEntity.notFound().build();
-				}
-		repository.deleteById(id);
-		
-		return ResponseEntity.noContent().build();
-
+		return objService.deletad(id);
 	}
 	
 }

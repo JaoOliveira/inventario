@@ -1,8 +1,11 @@
 package com.inventario.Inventario.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,15 +15,17 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="db_Object")
-public class Object {
-	
+public class Object implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name; 
 	private String model;
 	private String brand;
-	private int serialNumber;
+	private String serialNumber;
+	
+	@Enumerated(EnumType.STRING)
 	private Type type;
 	
 	@ManyToOne
@@ -31,7 +36,7 @@ public class Object {
 	}
 
 	
-	public Object(Long id, String model, String brand, int serialNumber, Type type, Departament departament) {
+	public Object(Long id, String model, String brand, String serialNumber, Type type, Departament departament) {
 		super();
 		this.id = id;
 		this.model = model;
@@ -76,11 +81,11 @@ public class Object {
 		this.brand = brand;
 	}
 
-	public int getSerialNumber() {
+	public String getSerialNumber() {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(int serialNumber) {
+	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 

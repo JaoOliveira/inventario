@@ -14,52 +14,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventario.Inventario.model.Departament;
-import com.inventario.Inventario.repositories.DepartamentRepository;
+import com.inventario.Inventario.service.DepartamentService;
 
 @RestController
 @RequestMapping("/departamet")
 public class DepartamentController {
 	
 	@Autowired
-	private DepartamentRepository repository;
+	private DepartamentService depService;
 	
 	@GetMapping
 	public List<Departament> findAll(){
-		return repository.findAll();
+		return depService.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Departament> findById(@PathVariable Long id){
-		return repository.findById(id)
-				.map(departament -> ResponseEntity.ok(departament))
-				.orElse(ResponseEntity.notFound().build());
+		return depService.findById(id);
 	}
 	
 	@PostMapping
 	public Departament insert(@RequestBody Departament departament){
-		Departament result = repository.save(departament);
-		return result;
+		return depService.insert(departament);	
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Departament> atualizar(@PathVariable Long id,
-			@RequestBody Departament departament) {
-		if(!repository.existsById(id)) {
-					return ResponseEntity.notFound().build();
-				}
-		departament = repository.save(departament);
-		
-		return ResponseEntity.ok(departament);
+	public ResponseEntity<Departament> atualizar(@PathVariable Long id, Departament departamente){
+		return depService.update(id, departamente);
 	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		if(!repository.existsById(id)) {
-					return ResponseEntity.notFound().build();
-				}
-		repository.deleteById(id);
-		
-		return ResponseEntity.noContent().build();
-
+		return depService.deletad(id);
 	}
 }
 
