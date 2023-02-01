@@ -29,7 +29,7 @@ public class Object implements Serializable{
 	private Type type;
 	
 	@ManyToOne
-	@JoinColumn(name = "departament_id")
+	@JoinColumn(name = "departament_id", nullable = true)
 	private Departament departament;
 	
 	public Object() {
