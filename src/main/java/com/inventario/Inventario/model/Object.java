@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="db_Object")
@@ -20,13 +20,19 @@ public class Object implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name; 
-	private String model;
-	private String brand;
-	private String serialNumber;
 	
-	@Enumerated(EnumType.STRING)
-	private Type type;
+	@NotBlank
+	@Size(max = 60)
+	private String name;
+	
+	@NotBlank
+	private String model;
+	
+	@NotBlank
+	private String brand;
+	
+	@NotBlank
+	private String serialNumber;
 	
 	@ManyToOne
 	@JoinColumn(name = "departament_id", nullable = true)
@@ -36,13 +42,12 @@ public class Object implements Serializable{
 	}
 
 	
-	public Object(Long id, String model, String brand, String serialNumber, Type type, Departament departament) {
+	public Object(Long id, String model, String brand, String serialNumber, Departament departament) {
 		super();
 		this.id = id;
 		this.model = model;
 		this.brand = brand;
 		this.serialNumber = serialNumber;
-		this.type = type;
 		this.departament = departament;
 	}
 
@@ -87,14 +92,6 @@ public class Object implements Serializable{
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
 	}
 
 	public Departament getDepartament() {

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inventario.Inventario.model.Object;
 import com.inventario.Inventario.service.ObjectService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/Object")
@@ -24,25 +26,25 @@ public class ObjectController {
 	@Autowired
 	private ObjectService objService;
 	
+	
 	@GetMapping
 	public List<Object> findAll(){
-		 return objService.findAll();
-		 
+		 return objService.findAll();	 
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> buscar(@PathVariable Long id) {
-		return objService.buscar(id);
+		return objService.findById(id);
 	}
 	
 	@PostMapping
-	public Object insert(@RequestBody Object object){
+	public Object insert(@Valid @RequestBody Object object){
 		return objService.insert(object);
 
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody Object object) {
+	public ResponseEntity<Object> atualizar(@Valid @PathVariable Long id, @RequestBody Object object) {
 		return objService.update(id, object);
 	}
 	
